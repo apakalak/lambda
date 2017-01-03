@@ -10,19 +10,24 @@ public class Calculation {
     public Calculation(List<Float> numbers){
         this.numbers = numbers;
     }
+
     public float getMean(){
         return  this.numbers.stream().reduce((float)0,(acc,val) -> acc + val)/this.numbers.size();
     }
 
     public float getMedian(){
         int length = this.numbers.size();
+        int midIndex = (int)Math.floor(length/2);
+
+        List<Float> nosSorted = this.numbers.stream().sorted().collect(Collectors.toList());
+
         if(length % 2 == 0 ){
-            List<Float> nosSorted = this.numbers.stream().sorted().collect(Collectors.toList());
-            return (nosSorted.get((int)Math.floor(length/2)) + nosSorted.get((int)Math.floor(length/2 - 1)))/2;
+            return (nosSorted.get(midIndex) + nosSorted.get(midIndex - 1))/2;
         }else{
-            return this.numbers.stream().sorted().collect(Collectors.toList()).get((int)Math.floor(length/2));
+            return nosSorted.get(midIndex);
         }
     }
+
     public float getMode(){
         HashMap<Float, Integer> mapping = new HashMap<>();
 
@@ -38,18 +43,4 @@ public class Calculation {
         return mapping.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).get();
     }
 
-
-//
-//    public float getMedian(){
-//        int length = this.numbers.size();
-//        int midIndex = (int)Math.floor(length/2);
-//
-//        List<Float> nosSorted = this.numbers.stream().sorted().collect(Collectors.toList());
-//
-//        if(length % 2 == 0 ){
-//            return nosSorted.get(midIndex) + nosSorted.get(midIndex - 1)/2;
-//        }else{
-//            return nosSorted.get(midIndex);
-//        }
-//    }
 }
